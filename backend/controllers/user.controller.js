@@ -1,4 +1,5 @@
 import { User } from "../models/user.model.js";
+import cloudinary from 'cloudinary'
 
 
 export const registerUser = async (req, res) => {
@@ -8,6 +9,20 @@ export const registerUser = async (req, res) => {
       return res.status(409).json({
         success: false,
         message: "All Fields are required"
+      })
+    }
+    if (!req.file) {
+      return res.status(409).json({
+        success: false,
+        message: "Profile pic is required"
+      })
+    }
+    let myCloud;
+    if (req.file.path) {
+      myCloud = await cloudinary.v2.uploader.upload(req.file.path, {
+        folder: "Chat _Profile",
+        width: 200,
+        crop: "scale"
       })
     }
     const user = await User.findOne({
@@ -23,7 +38,11 @@ export const registerUser = async (req, res) => {
       })
     }
     const newUser = await User.create({
-      name, email, password, gender, username
+      name, email, password, gender, username,
+      avatar: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url
+      }
     })
     res.status(201).json({
       success: true,
