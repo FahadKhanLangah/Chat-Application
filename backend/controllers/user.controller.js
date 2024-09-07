@@ -44,9 +44,18 @@ export const registerUser = async (req, res) => {
         url: myCloud.secure_url
       }
     })
+    const token = newUser.getJWTToken();
+    const options = {
+      httpOnly: true,
+      secure: true
+    }
+
+    res.cookie("token", token, options)
+
     res.status(201).json({
       success: true,
-      user: newUser
+      user: newUser,
+      token
     })
   } catch (error) {
     res.status(201).json({
@@ -55,3 +64,48 @@ export const registerUser = async (req, res) => {
     })
   }
 }
+
+export const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(409).json({
+        success: false,
+        message: "All Fields are required"
+      })
+    }
+    const user = await User.findOne({ username: username })
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: `${username} does not exist try another one`
+      })
+    }
+    const comparePassword = await user.comparePassword(password);
+    if (!comparePassword) {
+      return res.status(201).json({
+        success: false,
+        message: "Incorrect Password"
+      })
+    }
+    const token = user.getJWTToken();
+    const options = {
+      httpOnly: true,
+      secure: true
+    }
+
+    res.cookie("token", token, options)
+
+    res.status(201).json({
+      success: true,
+      user: newUser,
+      token
+    })
+  } catch (error) {
+    res.status(201).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
