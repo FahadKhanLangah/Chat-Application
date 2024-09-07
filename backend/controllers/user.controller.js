@@ -90,7 +90,7 @@ export const loginUser = async (req, res) => {
     }
     const token = user.getJWTToken();
     const options = {
-      maxAge : 24*60*60*1000 ,
+      maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: true
     }
@@ -99,11 +99,31 @@ export const loginUser = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      user: newUser,
+      user,
       token
     })
   } catch (error) {
     res.status(201).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
+export const logoutUser = async (req, res) => {
+  try {
+    const options = {
+      httpOnly: true,
+      secure: true,
+      expires: new Date(Date.now())
+    }
+    res.cookie("token", null, options);
+    res.status(201).json({
+      success: true,
+      message: "Logout Successfully"
+    })
+  } catch (error) {
+    res.status(500).json({
       success: false,
       message: error.message
     })
