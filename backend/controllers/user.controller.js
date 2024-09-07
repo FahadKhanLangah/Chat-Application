@@ -83,7 +83,7 @@ export const loginUser = async (req, res) => {
     }
     const comparePassword = await user.comparePassword(password);
     if (!comparePassword) {
-      return res.status(201).json({
+      return res.status(400).json({
         success: false,
         message: "Incorrect Password"
       })
@@ -97,13 +97,13 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, options)
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       user,
       token
     })
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
       success: false,
       message: error.message
     })
@@ -127,6 +127,24 @@ export const logoutUser = async (req, res) => {
       success: false,
       message: error.message
     })
+  }
+}
+
+export const getOtherUsers = async (req, res) => {
+  try {
+    const otherUser = await User.find({ _id: { $ne: req.user } }).select("-password -email");
+    if (!otherUser) {
+      return res.status(404).json({
+        success: false,
+        message: "No user Available Right now"
+      })
+    }
+    res.status(200).json({
+      success: true,
+      users: otherUser
+    })
+  } catch (error) {
+
   }
 }
 
