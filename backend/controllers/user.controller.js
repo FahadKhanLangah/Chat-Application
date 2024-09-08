@@ -4,6 +4,7 @@ import cloudinary from 'cloudinary'
 
 export const registerUser = async (req, res) => {
   try {
+    console.log("Avatar file:", req.file);
     const { name, username, email, password, gender } = req.body;
     if (!name || !username || !email || !password || !gender) {
       return res.status(409).json({
