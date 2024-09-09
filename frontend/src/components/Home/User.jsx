@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getOtherUsers } from "../../Redux/Actions/userAction";
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const User = () => {
   const dispatch = useDispatch();
@@ -28,12 +29,12 @@ const User = () => {
             <div className="online avatar h-12 w-12 ">
               <img className="w-[100%] h-[100%] rounded-full object-cover" src={v.avatar.url} alt="Not available" />
             </div>
-            <div className="">
+            <Link to={`/message/${v._id}`}><div className="">
               <h1 className="font-bold text-xl">{v.name}</h1>
               <p className="overflow-hidden text-sm">Fahad kesy ho</p>
             </div>
+            </Link>
           </div>
-
         </div>
       )}
   </>

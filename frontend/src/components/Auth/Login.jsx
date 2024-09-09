@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import {toast, ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { login } from '../../Redux/Actions/userAction';
 
 const Login = () => {
@@ -9,9 +9,9 @@ const Login = () => {
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const {success,error} = useSelector((v)=>v.user);
+  const { success, error } = useSelector((v) => v.user);
   const navigate = useNavigate();
-  useEffect(()=>{
+  useEffect(() => {
     if (error) {
       toast(error)
     }
@@ -19,16 +19,16 @@ const Login = () => {
       toast("Login Successfully");
       navigate('/');
     }
-  },[error,success,navigate]);
+  }, [error, success, navigate]);
   const handleSubmit = () => {
     const formData = new FormData();
-    formData.append("username",username);
-    formData.append("password",password);
-    dispatch(login(formData)) 
+    formData.append("username", username);
+    formData.append("password", password);
+    dispatch(login(formData))
   }
   return (
     <div className=" bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 border border-gray-100">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="p-4 text-center text-2xl font-bold">
         Login Now
       </div>

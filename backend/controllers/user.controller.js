@@ -173,3 +173,25 @@ export const loadUser = async (req, res) => {
   }
 }
 
+export const getOtherUserDetail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No user Available Right now"
+      })
+    }
+    res.status(200).json({
+      success: true,
+      user
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}

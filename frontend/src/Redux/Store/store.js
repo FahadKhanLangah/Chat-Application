@@ -1,7 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { userReducer } from '../Reducers/userReducer';
+import { logoutReducer, userReducer } from '../Reducers/userReducer';
 const reducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  lout:logoutReducer
 })
 let initialState = {}
 const store = configureStore({
