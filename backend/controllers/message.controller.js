@@ -23,9 +23,9 @@ export const sendMessage = async (req, res) => {
     }
     await gotConversation.save();
     // Socket io will be implemented there
-   return res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Message sent Successfully"
+      message,
     })
 
   } catch (error) {
