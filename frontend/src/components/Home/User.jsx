@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const User = ({ users }) => {
   if (!users || users.length === 0) {
-    return <p className="text-center text-white">No users found</p>;  // Handle empty state
+    return <p className="text-center text-white">No users found... Login to see</p>;  // Handle empty state
   }
 
   return (
